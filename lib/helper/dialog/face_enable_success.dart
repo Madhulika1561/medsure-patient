@@ -1,0 +1,50 @@
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:medsure_patient/res/app_color.dart';
+import 'package:medsure_patient/res/app_images.dart';
+import 'package:medsure_patient/res/dimension.dart';
+import 'package:medsure_patient/res/string.dart';
+import 'package:medsure_patient/widgetHelper/inter_font_text.dart';
+
+class FaceEnableSuccessDialog extends StatelessWidget{
+  const FaceEnableSuccessDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return GestureDetector(
+      onTap: (){
+        Get.back();
+      },
+      child: Material(
+        color: Colors.transparent,
+        child: Center(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: Dimension.width30,vertical: Dimension.height24),
+            margin: EdgeInsets.only(left: Dimension.width30,right: Dimension.width30),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(Dimension.height24),
+              boxShadow:  [BoxShadow(color: AppColors.shadowColor.withOpacity(0.2),offset: const Offset(0.0,5.0),blurRadius: 7.0)],
+              color: AppColors.whiteColor,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Image.asset(AppImages.successImg,width: Dimension.height80,height: Dimension.height80,),
+                SizedBox(height: Dimension.height20,),
+                InterFontText(text: yourAuthFaceTouchSuccessText, textColor: AppColors.lightBlackColor, textSize: Dimension.fontSize16, fontWeight: FontWeight.w400,align: TextAlign.center,),
+
+
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+}

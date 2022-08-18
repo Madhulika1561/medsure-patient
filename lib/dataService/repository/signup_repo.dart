@@ -1,8 +1,9 @@
 
 
 import 'package:get/get.dart';
-import 'package:medsure_patient/data/api/api_client.dart';
-import 'package:medsure_patient/data/apiContent.dart';
+import 'package:medsure_patient/dataService/api/api_client_api.dart';
+import 'package:medsure_patient/dataService/apiContent.dart';
+
 
 class SignupRepo extends GetxService{
   final ApiClient apiClient;

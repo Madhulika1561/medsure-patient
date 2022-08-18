@@ -4,17 +4,15 @@ import 'package:get/get.dart';
 
 class ApiClient extends GetConnect implements GetxService{
 
-  late String token;
  late String appBaseUrl;
 
- late Map<String,String> _mapHeaders;
+ late Map<String,String> mapHeaders;
 
   ApiClient({required this.appBaseUrl}){
     baseUrl = appBaseUrl;
     timeout = const Duration(seconds: 30);
-    _mapHeaders={
+    mapHeaders={
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization':'Bearer $token'
     };
   }
 

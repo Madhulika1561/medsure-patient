@@ -1,7 +1,6 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:medsure_patient/auth/faceId_setup/success_face_setup.dart';
 import 'package:medsure_patient/bottom_screen/customBottomTextBar.dart';
@@ -22,7 +21,7 @@ class FingerTouchSetup extends StatefulWidget{
 
 class _FingerTouchSetupState extends State<FingerTouchSetup> {
 
-
+///jfjfjf
   @override
   void initState() {
     // TODO: implement initState

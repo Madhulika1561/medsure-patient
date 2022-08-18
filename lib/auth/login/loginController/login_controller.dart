@@ -7,9 +7,9 @@ import 'package:medsure_patient/res/string.dart';
 
 
 class LoginController extends GetxController{
+  late TextEditingController editEmailController,editPasswordController;
 
-  final editEmailController = TextEditingController();
-  final editPasswordController = TextEditingController();
+
 
   RxBool isPassHide = true.obs;
 
@@ -28,10 +28,31 @@ class LoginController extends GetxController{
   String? validateLoginPassword(String value){
     if(value.toString().trim().isEmpty){
       return pleaseEnterPassword;
-    }else if(!Common().passwordValidation(value.toString())){
+    }
+    /*else if(!Common().passwordValidation(value.toString())){
       return pleaseEnterValidPassword;
-    }else{
+    }*/
+    else{
       return null;
     }
   }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    editEmailController     = TextEditingController();
+    editPasswordController = TextEditingController();
+  }
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
+    editEmailController.dispose();
+    editPasswordController.dispose();
+
+  }
+
+
+
 }

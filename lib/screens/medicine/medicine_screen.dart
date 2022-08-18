@@ -55,14 +55,12 @@ class MedicineScreen extends StatelessWidget{
           InkWell(
             onTap: (){
               medicineController.isPrevFun();
-              print("previous");
             },
               child: AppCircleImages( icon: Icons.arrow_back_ios_new, size: Dimension.height40, iconSize: Dimension.fontSize18,backgroundColor: AppColors.lightActiveFieldBorderColor,iconColor: AppColors.whiteColor,)),
           SmallText(text: medicineController.isNext.value==false?"05-27-2022" : "05-28-2022", textColor: AppColors.lightBlueColor, textSize: Dimension.fontSize20, fontWeight: FontWeight.w700),
           InkWell(
               onTap: (){
                 medicineController.isNextFun();
-                print("next");
               },
               child: AppCircleImages( icon: Icons.arrow_forward_ios_outlined, size: Dimension.height40, iconSize: Dimension.fontSize18,backgroundColor: AppColors.lightActiveFieldBorderColor,iconColor: AppColors.whiteColor,))
 

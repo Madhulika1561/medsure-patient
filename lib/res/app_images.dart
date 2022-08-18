@@ -28,6 +28,7 @@ class AppImages{
   static const String demoRecImg = "assets/images/demo_rect.png";
   static const String rectangleImg = "assets/images/rectangle.png";
   static const String helpImg = "assets/images/helpImage.svg";
+  static const String videoImg = "assets/images/video_img.jpeg";
   static const String upperArrowForNotificationImg = "assets/images/upper_arrowForNoti.png";
   static const String bottomArrowForNotificationImg = "assets/images/bottom_arrowForNoti.png";
   static const String passwordSuccessImg = "assets/images/password_success_img.png";

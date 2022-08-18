@@ -20,7 +20,7 @@ class AppColors{
   static const Color lightBackColor = Color(0xff6E6E6E);
   static const Color lightBorderColor = Color(0xffE4DFDA);
   static const Color lightGreenColor = Color(0xff008000);
-  static const Color manageNotiBgColor = Color(0xfaf9f9);
+  static const Color manageNotiBgColor = Color(0x0ffaf9f9);
 
 
   static const Color borderColor = Color(0xffC5C5C5);

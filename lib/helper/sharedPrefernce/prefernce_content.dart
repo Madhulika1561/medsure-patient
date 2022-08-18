@@ -11,7 +11,10 @@ class PreferenceConstants{
   static const String keyUserAddress ="userAddress";
   static const String keyUserCity ="userCity";
   static const String keyUserState ="userState";
-  static const String keyUserCountry ="userCountry";
+  static const String keyUserCountry ="pinCode";
+  static const String keyUserPinCode ="userCountry";
+  static const String keyUserId ="userId";
+  static const String keyUserAppId ="userAppId";
   static const String keyIsLogged ="isLogged";
 
 }

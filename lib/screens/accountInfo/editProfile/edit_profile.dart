@@ -1,13 +1,18 @@
 
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:medsure_patient/dataService/apiContent.dart';
 import 'package:medsure_patient/helper/common.dart';
+import 'package:medsure_patient/helper/dialog/server_error_dialog.dart';
+import 'package:medsure_patient/helper/routerHelper/router_helper.dart';
+import 'package:medsure_patient/helper/sharedPrefernce/shared_preference.dart';
 import 'package:medsure_patient/res/app_color.dart';
-import 'package:medsure_patient/res/app_images.dart';
 import 'package:medsure_patient/res/dimension.dart';
 import 'package:medsure_patient/res/string.dart';
 import 'package:medsure_patient/screens/accountInfo/account_info_screen.dart';
@@ -16,6 +21,7 @@ import 'package:medsure_patient/widgetHelper/app_button.dart';
 import 'package:medsure_patient/widgetHelper/back_button.dart';
 import 'package:medsure_patient/widgetHelper/big_text.dart';
 import 'package:medsure_patient/widgetHelper/small_text.dart';
+import 'package:http/http.dart' as http;
 
 class EditProfileScreen extends StatefulWidget{
   const EditProfileScreen({Key? key}) : super(key: key);
@@ -25,16 +31,37 @@ class EditProfileScreen extends StatefulWidget{
 
 }
 class _EditProfileScreenState extends State<EditProfileScreen>{
+  late Map _map;
   final EditProfileController editProfileController = Get.put(EditProfileController());
   final editProfileGlobalKey = GlobalKey<FormState>();
   String genderType ="Male";
-  int id =0;
+  int id =0,_id=0;
+  String firstName='',lastName='',gender='',dob='',address='',city='',state='',country='';
+  int phoneNumber=0,postal_code=0;
 
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    UserSharedPreference.getUserId().then((value) {setState(() {
+      _id = value!;
+      print(_id);
+    });});
+    UserSharedPreference.getUserFirstName().then((value) {setState(() {editProfileController.editFirstName.text=value.toString();});});
+    UserSharedPreference.getUserLastName().then((value) {setState(() {editProfileController.editLastName.text=value.toString();});});
+
+    UserSharedPreference.getUserGender().then((value) {setState(() {gender=value.toString();});});
+    UserSharedPreference.getUserDOB().then((value) {setState(() {editProfileController.editDateInput.text=value.toString();});});
+
+    UserSharedPreference.getUserAddress().then((value) {setState(() {editProfileController.editAddress.text=value.toString();});});
+    UserSharedPreference.getUserCity().then((value) {setState(() {editProfileController.editCity.text=value.toString();});});
+
+    UserSharedPreference.getUserState().then((value) {setState(() {editProfileController.editState.text=value.toString();});});
+    UserSharedPreference.getUserCountry().then((value) {setState(() {editProfileController.editCountry.text=value.toString();});});
+
+    UserSharedPreference.getUserPinCode().then((value) {setState(() {editProfileController.editPinCode.text=value.toString();print(editProfileController.editPinCode.text);});});
+    UserSharedPreference.getUserMobileNum().then((value) {setState(() {editProfileController.editMobileNum.text=value.toString();});});
   }
   void selectedDate() async{
     DateTime? pickedDate = await showDatePicker(
@@ -48,6 +75,11 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
     }else{
 
     }
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -78,8 +110,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                 children: [
                   SmallText(text: firstNameText, textColor: AppColors.lightLBGreyOneColor, textSize: Dimension.fontSize14, fontWeight: FontWeight.w400),
                   SizedBox(height: Dimension.height08,),
-                  SizedBox(height: Dimension.height48,
-                  child: TextFormField(
+                  TextFormField(
                     controller: editProfileController.editFirstName,
                     style: GoogleFonts.inter(
                       fontSize: Dimension.fontSize16,
@@ -88,11 +119,11 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                     ),
                     keyboardType: TextInputType.name,
                     obscureText: false,
-                    decoration: Common().getInputDecoration(hintText: enterFirstNameText),
+                    decoration: Common().getInputDecoration(hintText: firstName.toString()==""?enterFirstNameText:firstName.toString()),
                     validator: (value){
                       return editProfileController.validateEditFirstName(value.toString());
                     },
-                  ),)
+                  )
                 ],
               ),),
               ///last name
@@ -102,47 +133,23 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                   children: [
                     SmallText(text: lastNameText, textColor: AppColors.lightLBGreyOneColor, textSize: Dimension.fontSize14, fontWeight: FontWeight.w400),
                     SizedBox(height: Dimension.height08,),
-                    SizedBox(height: Dimension.height48,
-                      child: TextFormField(
-                        controller: editProfileController.editLastName,
-                        style: GoogleFonts.inter(
-                          fontSize: Dimension.fontSize16,
-                          color: AppColors.lightGreyColor,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        keyboardType: TextInputType.name,
-                        obscureText: false,
-                        decoration: Common().getInputDecoration(hintText: enterLastNameText),
-                        validator: (value){
-                          return editProfileController.validateEditLastName(value.toString());
-                        },
-                      ),)
+                    TextFormField(
+                      controller: editProfileController.editLastName,
+                      style: GoogleFonts.inter(
+                        fontSize: Dimension.fontSize16,
+                        color: AppColors.lightGreyColor,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      keyboardType: TextInputType.name,
+                      obscureText: false,
+                      decoration: Common().getInputDecoration(hintText: enterLastNameText),
+                      validator: (value){
+                        return editProfileController.validateEditLastName(value.toString());
+                      },
+                    )
                   ],
                 ),),
-              ///email
-              Padding(padding: EdgeInsets.only(left: Dimension.width20,right: Dimension.width20,top: Dimension.height32),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SmallText(text: emailIdText, textColor: AppColors.lightLBGreyOneColor, textSize: Dimension.fontSize14, fontWeight: FontWeight.w400),
-                    SizedBox(height: Dimension.height08,),
-                    SizedBox(height: Dimension.height48,
-                      child: TextFormField(
-                        controller: editProfileController.editEmail,
-                        style: GoogleFonts.inter(
-                          fontSize: Dimension.fontSize16,
-                          color: AppColors.lightGreyColor,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        obscureText: false,
-                        decoration: Common().getInputDecoration(hintText: enterEmailIdText),
-                        validator: (value){
-                          return editProfileController.validateEditEmail(value.toString());
-                        },
-                      ),)
-                  ],
-                ),),
+
               ///mobile
               Padding(padding: EdgeInsets.only(left: Dimension.width20,right: Dimension.width20,top: Dimension.height32),
                 child: Column(
@@ -150,100 +157,26 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                   children: [
                     SmallText(text: mobileNumText, textColor: AppColors.lightLBGreyOneColor, textSize: Dimension.fontSize14, fontWeight: FontWeight.w400),
                     SizedBox(height: Dimension.height08,),
-                    SizedBox(height: Dimension.height48,
-                      child: TextFormField(
-                        controller: editProfileController.editMobileNum,
-                        style: GoogleFonts.inter(
-                          fontSize: Dimension.fontSize16,
-                          color: AppColors.lightGreyColor,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        keyboardType: TextInputType.number,
-                        obscureText: false,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(10)
-                        ],
-                        decoration: Common().getInputDecoration(hintText: enterMobileNumText),
-                        validator: (value){
-                          return editProfileController.validateEditMobileNum(value.toString());
-                        },
-                      ),)
-                  ],
-                ),),
-              ///password
-              Padding(padding: EdgeInsets.only(left: Dimension.width20,right: Dimension.width20,top: Dimension.height32),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SmallText(text: passwordText, textColor: AppColors.lightLBGreyOneColor, textSize: Dimension.fontSize14, fontWeight: FontWeight.w400),
-                    SizedBox(height: Dimension.height08,),
-                    SizedBox(
-                      height: Dimension.height48,
-                      child: TextFormField(
-                        style: GoogleFonts.inter(
-                          fontSize: Dimension.fontSize16,
-                          color: AppColors.lightGreyColor,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        controller: editProfileController.editPassword,
-                        obscuringCharacter: "*",
-                        obscureText: editProfileController.isEditPassHide.value,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(16)
-                        ],
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                            contentPadding:  EdgeInsets.only(left: Dimension.width20),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(Dimension.height10),
-                              borderSide: const BorderSide(
-                                color: AppColors.lightFieldBorderColor,
-                                width: 1.0,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(Dimension.height10),
-                              borderSide: const BorderSide(
-                                color: AppColors.lightActiveFieldBorderColor,
-                                width: 1.0,
-                              ),
-                            ),
-                            fillColor: AppColors.lightOrangeBackColor,
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(Dimension.height10),
-                              borderSide: const BorderSide(
-                                color: AppColors.lightActiveFieldBorderColor,
-                                width: 1.0,
-                              ),
-                            ),
-                            hintText: "Enter password",
-                            hintStyle: GoogleFonts.inter(
-                                fontSize: Dimension.fontSize16,
-                                color: AppColors.lightGreyColor,
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.normal
-                            ),
-                            suffixIcon: IconButton(
-                              onPressed: (){
-
-                                editProfileController.isEditPassHide.value = !editProfileController.isEditPassHide.value;
-
-
-
-                              },
-                              icon: Image.asset(editProfileController.isEditPassHide.value ? AppImages.eyeOpenIcon:AppImages.eyeCloseIcon,width: Dimension.height20,height: Dimension.height20,color: AppColors.lightGreyColor,),
-                            )
-                        ),
-                        validator: (value){
-                          return editProfileController.validateEditPassword(value.toString());
-                        },
-
-
+                    TextFormField(
+                      controller: editProfileController.editMobileNum,
+                      style: GoogleFonts.inter(
+                        fontSize: Dimension.fontSize16,
+                        color: AppColors.lightGreyColor,
+                        fontWeight: FontWeight.w400,
                       ),
-                    ),
+                      keyboardType: TextInputType.number,
+                      obscureText: false,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(10)
+                      ],
+                      decoration: Common().getInputDecoration(hintText: enterMobileNumText),
+                      validator: (value){
+                        return editProfileController.validateEditMobileNum(value.toString());
+                      },
+                    )
                   ],
                 ),),
+
               ///gender
               Padding(padding: EdgeInsets.only(left: Dimension.width20,right: Dimension.width20,top: Dimension.height32),
                 child: Column(
@@ -259,7 +192,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                           groupValue: id,
                           onChanged: (val) {
                             setState(() {
-                              genderType = 'Male';
+                              genderType = 'M';
                               id = 1;
                             });
                           },
@@ -278,7 +211,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                           groupValue: id,
                           onChanged: (val) {
                             setState(() {
-                              genderType = 'Female';
+                              genderType = 'F';
                               id = 2;
                               //print(radioButtonItem.toString());
                             });
@@ -298,7 +231,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                           groupValue: id,
                           onChanged: (val) {
                             setState(() {
-                              genderType = 'Other';
+                              genderType = 'O';
                               id = 3;
                               //print(radioButtonItem.toString());
                             });
@@ -323,60 +256,57 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                   children: [
                     SmallText(text: dobText, textColor: AppColors.lightLBGreyOneColor, textSize: Dimension.fontSize14, fontWeight: FontWeight.w400),
                     SizedBox(height: Dimension.height08,),
-                    SizedBox(
-                      height: Dimension.height48,
-                      child: TextFormField(
-                        style: GoogleFonts.inter(
-                          fontSize: Dimension.fontSize16,
+                    TextFormField(
+                      style: GoogleFonts.inter(
+                        fontSize: Dimension.fontSize16,
+                        color: AppColors.lightGreyColor,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      controller: editProfileController.editDateInput,
+                      obscureText: false,
+                      keyboardType: TextInputType.text,
+                      enableInteractiveSelection: false,
+                      readOnly: true,
+                      decoration:  InputDecoration(
+                        contentPadding: const EdgeInsets.only(left: 16.0),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.lightFieldBorderColor,
+                            width: 1.0,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.lightActiveFieldBorderColor,
+                            width: 1.0,
+                          ),
+                        ),
+                        fillColor: AppColors.lightOrangeBackColor,
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(
+                            color: AppColors.lightActiveFieldBorderColor,
+                            width: 1.0,
+                          ),
+                        ),
+                        hintText: enterDOBText,
+                        suffixIcon: const Icon(Icons.calendar_month,color: AppColors.lightBlueColor,),
+                        hintStyle: GoogleFonts.inter(
+                          fontSize: 16.0,
                           color: AppColors.lightGreyColor,
                           fontWeight: FontWeight.w400,
                         ),
-                        controller: editProfileController.editDateInput,
-                        obscureText: false,
-                        keyboardType: TextInputType.text,
-                        enableInteractiveSelection: false,
-                        readOnly: true,
-                        decoration:  InputDecoration(
-                          contentPadding: const EdgeInsets.only(left: 16.0),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.lightFieldBorderColor,
-                              width: 1.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.lightActiveFieldBorderColor,
-                              width: 1.0,
-                            ),
-                          ),
-                          fillColor: AppColors.lightOrangeBackColor,
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: const BorderSide(
-                              color: AppColors.lightActiveFieldBorderColor,
-                              width: 1.0,
-                            ),
-                          ),
-                          hintText: enterDOBText,
-                          suffixIcon: const Icon(Icons.calendar_month,color: AppColors.lightBlueColor,),
-                          hintStyle: GoogleFonts.inter(
-                            fontSize: 16.0,
-                            color: AppColors.lightGreyColor,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        validator: (value){
-                          return editProfileController.validateEditDOB(value.toString());
-                        },
-                        onTap: (){
-                          selectedDate();
-                        },
-
                       ),
+                      validator: (value){
+                        return editProfileController.validateEditDOB(value.toString());
+                      },
+                      onTap: (){
+                        selectedDate();
+                      },
+
                     ),
                   ],
                 ),),
@@ -387,21 +317,20 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                   children: [
                     SmallText(text: addressText, textColor: AppColors.lightLBGreyOneColor, textSize: Dimension.fontSize14, fontWeight: FontWeight.w400),
                     SizedBox(height: Dimension.height08,),
-                    SizedBox(height: Dimension.height48,
-                      child: TextFormField(
-                        controller: editProfileController.editAddress,
-                        style: GoogleFonts.inter(
-                          fontSize: Dimension.fontSize16,
-                          color: AppColors.lightGreyColor,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        keyboardType: TextInputType.text,
-                        obscureText: false,
-                        decoration: Common().getInputDecoration(hintText: enterFullAddressText),
-                        validator: (value){
-                          return editProfileController.validateEditAddress(value.toString());
-                        },
-                      ),)
+                    TextFormField(
+                      controller: editProfileController.editAddress,
+                      style: GoogleFonts.inter(
+                        fontSize: Dimension.fontSize16,
+                        color: AppColors.lightGreyColor,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      keyboardType: TextInputType.text,
+                      obscureText: false,
+                      decoration: Common().getInputDecoration(hintText: enterFullAddressText),
+                      validator: (value){
+                        return editProfileController.validateEditAddress(value.toString());
+                      },
+                    )
                   ],
                 ),),
               ///city
@@ -411,21 +340,46 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                   children: [
                     SmallText(text: cityText, textColor: AppColors.lightLBGreyOneColor, textSize: Dimension.fontSize14, fontWeight: FontWeight.w400),
                     SizedBox(height: Dimension.height08,),
-                    SizedBox(height: Dimension.height48,
-                      child: TextFormField(
-                        controller: editProfileController.editCity,
-                        style: GoogleFonts.inter(
-                          fontSize: Dimension.fontSize16,
-                          color: AppColors.lightGreyColor,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        keyboardType: TextInputType.text,
-                        obscureText: false,
-                        decoration: Common().getInputDecoration(hintText: enterCityText),
-                        validator: (value){
-                          return editProfileController.validateEditCity(value.toString());
-                        },
-                      ),)
+                    TextFormField(
+                      controller: editProfileController.editCity,
+                      style: GoogleFonts.inter(
+                        fontSize: Dimension.fontSize16,
+                        color: AppColors.lightGreyColor,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      keyboardType: TextInputType.text,
+                      obscureText: false,
+                      decoration: Common().getInputDecoration(hintText: enterCityText),
+                      validator: (value){
+                        return editProfileController.validateEditCity(value.toString());
+                      },
+                    )
+                  ],
+                ),),
+              ///mobile
+              Padding(padding: EdgeInsets.only(left: Dimension.width20,right: Dimension.width20,top: Dimension.height32),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SmallText(text: postalCodeText, textColor: AppColors.lightLBGreyOneColor, textSize: Dimension.fontSize14, fontWeight: FontWeight.w400),
+                    SizedBox(height: Dimension.height08,),
+                    TextFormField(
+                      controller: editProfileController.editPinCode,
+                      style: GoogleFonts.inter(
+                        fontSize: Dimension.fontSize16,
+                        color: AppColors.lightGreyColor,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      keyboardType: TextInputType.number,
+                      obscureText: false,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(6)
+                      ],
+                      decoration: Common().getInputDecoration(hintText: "Post Code"),
+                      validator: (value){
+                        return editProfileController.validateEditPinCode(value.toString());
+                      },
+                    )
                   ],
                 ),),
               ///state
@@ -435,21 +389,20 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                   children: [
                     SmallText(text: stateText, textColor: AppColors.lightLBGreyOneColor, textSize: Dimension.fontSize14, fontWeight: FontWeight.w400),
                     SizedBox(height: Dimension.height08,),
-                    SizedBox(height: Dimension.height48,
-                      child: TextFormField(
-                        controller: editProfileController.editState,
-                        style: GoogleFonts.inter(
-                          fontSize: Dimension.fontSize16,
-                          color: AppColors.lightGreyColor,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        keyboardType: TextInputType.text,
-                        obscureText: false,
-                        decoration: Common().getInputDecoration(hintText: enterStateText),
-                        validator: (value){
-                          return editProfileController.validateEditState(value.toString());
-                        },
-                      ),)
+                    TextFormField(
+                      controller: editProfileController.editState,
+                      style: GoogleFonts.inter(
+                        fontSize: Dimension.fontSize16,
+                        color: AppColors.lightGreyColor,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      keyboardType: TextInputType.text,
+                      obscureText: false,
+                      decoration: Common().getInputDecoration(hintText: enterStateText),
+                      validator: (value){
+                        return editProfileController.validateEditState(value.toString());
+                      },
+                    )
                   ],
                 ),),
               ///country
@@ -459,21 +412,20 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
                   children: [
                     SmallText(text: countryText, textColor: AppColors.lightLBGreyOneColor, textSize: Dimension.fontSize14, fontWeight: FontWeight.w400),
                     SizedBox(height: Dimension.height08,),
-                    SizedBox(height: Dimension.height48,
-                      child: TextFormField(
-                        controller: editProfileController.editCountry,
-                        style: GoogleFonts.inter(
-                          fontSize: Dimension.fontSize16,
-                          color: AppColors.lightGreyColor,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        keyboardType: TextInputType.text,
-                        obscureText: false,
-                        decoration: Common().getInputDecoration(hintText: enterCountryText),
-                        validator: (value){
-                          return editProfileController.validateEditCountry(value.toString());
-                        },
-                      ),)
+                    TextFormField(
+                      controller: editProfileController.editCountry,
+                      style: GoogleFonts.inter(
+                        fontSize: Dimension.fontSize16,
+                        color: AppColors.lightGreyColor,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      keyboardType: TextInputType.text,
+                      obscureText: false,
+                      decoration: Common().getInputDecoration(hintText: enterCountryText),
+                      validator: (value){
+                        return editProfileController.validateEditCountry(value.toString());
+                      },
+                    )
                   ],
                 ),),
 
@@ -488,7 +440,10 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
         padding: EdgeInsets.only(left: Dimension.width30,right: Dimension.width30,top: Dimension.height10,bottom: Dimension.height10),
         child: AppButton(onTap: (){
           if(editProfileGlobalKey.currentState!.validate()){
-            Get.to(const AccountInfoScreen());
+            getEditResponse(editProfileController.editFirstName.text.trim(),editProfileController.editLastName.text.trim(),
+                editProfileController.editMobileNum.text.trim(),editProfileController.editCity.text.trim(),editProfileController.editState.text.trim(),
+                editProfileController.editPinCode.text.trim(),editProfileController.editCountry.text.trim(),editProfileController.editAddress.text.trim());
+
           }
 
         },
@@ -501,4 +456,56 @@ class _EditProfileScreenState extends State<EditProfileScreen>{
     );
   }
 
+
+  Future<void> getEditResponse(String name,String lastName,String phoneNum,String city,String state, String pinCode,String country, String address) async{
+    Common.showLoading(message: "Loading..");
+   _map ={
+    firstNameApiConsText:name.toString() ,lastNameApiConsText:lastName.toString(),phoneNumberApiConsText:phoneNum.toString() ,genderApiConsText:genderType.toString() ,
+     cityApiConsText:city.toString() ,stateApiConsText:state.toString() ,pinCodeApiConsText:pinCode.toString() ,countryApiConsText:country.toString(),
+     "Address":address.toString()
+   };
+   print(_map);
+
+   try{
+     var url = Uri.parse(ApiContent.baseUrl+ApiContent.commonApiTag+ApiContent.editProfileApi+_id.toString());
+     var mapHeaders = {
+       'Content-Type':'application/json',
+       'accept':'application/json'
+     };
+     var response = await http.put(url,body: jsonEncode(_map),headers: mapHeaders);
+     print("response...${json.decode(response.body)}");
+     if(response.statusCode==ApiContent.statusCode200){
+       var mapConverter = json.decode(response.body);
+       var status = (mapConverter["status"]==null)?"":mapConverter["status"];
+       var message = (mapConverter["message"]==null)?"":mapConverter["message"];
+
+       if(status.toString()=="successful"){
+         Common.hideLoading();
+         Common.showToastMessage(message.toString());
+         Get.to(const AccountInfoScreen());
+         UserSharedPreference.setUserFirstName(name.toString());
+         UserSharedPreference.setUserLastName(lastName.toString());
+         UserSharedPreference.setUserMobileNum(int.parse(phoneNum));
+         UserSharedPreference.setUserGender(genderType.toString());
+         UserSharedPreference.setUserAddress(address.toString());
+         UserSharedPreference.setUserCity(city.toString());
+         UserSharedPreference.setUserState(state.toString());
+         UserSharedPreference.setUserCountry(country.toString());
+         UserSharedPreference.setUserPinCode(int.parse(pinCode));
+       }else{
+         Common.hideLoading();
+       }
+
+
+     }else{
+
+     }
+   }on PlatformException catch(e){
+     Common.hideLoading();
+     Get.dialog(ServerErrorDialog(errorText:e.toString()));
+   }
+
+
+
+  }
 }

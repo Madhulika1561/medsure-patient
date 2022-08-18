@@ -1,9 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:medsure_patient/data/singupRepo/signup_repo.dart';
 import 'package:medsure_patient/helper/common.dart';
-import 'package:medsure_patient/res/app_color.dart';
 import 'package:medsure_patient/res/string.dart';
 
 class SingUpController extends GetxController{
@@ -13,24 +11,40 @@ class SingUpController extends GetxController{
 
   List<dynamic> _signUpList =[];
   List<dynamic> get signUpList=>_signUpList;
-
-  TextEditingController editFirstName = TextEditingController();
-  TextEditingController editLastName = TextEditingController();
-  TextEditingController editEmail = TextEditingController();
-  TextEditingController editMobileNum = TextEditingController();
-  TextEditingController editPassword = TextEditingController();
-  TextEditingController editDateInput = TextEditingController();
-  TextEditingController editAddress = TextEditingController();
-  TextEditingController editCity = TextEditingController();
-  TextEditingController editState = TextEditingController();
-  TextEditingController editPassCode = TextEditingController();
-  TextEditingController editCountry = TextEditingController();
-
+  late TextEditingController editFirstName,editLastName,editEmail,editMobileNum,editPassword,editDateInput,
+  editAddress,editCity,editState,editPassCode,editCountry;
   final GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
 
   RxBool isPassHide = true.obs;
   RxBool isLoading = false.obs;
 
+
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    editFirstName   = TextEditingController();
+    editLastName    = TextEditingController();
+    editEmail       = TextEditingController();
+    editMobileNum   = TextEditingController();
+    editPassword    = TextEditingController();
+    editDateInput   = TextEditingController();
+    editAddress     = TextEditingController();
+    editCity        = TextEditingController();
+    editState       = TextEditingController();
+    editPassCode    = TextEditingController();
+    editCountry     = TextEditingController();
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
+    editFirstName.dispose();editLastName.dispose();editEmail.dispose();editMobileNum.dispose();
+    editPassword.dispose();editDateInput.dispose();editAddress.dispose();editCity.dispose();
+    editState.dispose();editPassCode.dispose();editCountry.dispose();
+  }
 
   String? validateName(String value){
     if(value.toString().trim().isEmpty){
@@ -118,7 +132,6 @@ class SingUpController extends GetxController{
       return null;
     }
   }
-
 
   /*Future<void> getSignUpResponse() async{
     Response response = await signupRepo!.getSingUpData();

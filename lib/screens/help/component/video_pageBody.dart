@@ -1,9 +1,12 @@
 
+
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:medsure_patient/model/videoPlayerModel.dart';
 import 'package:medsure_patient/res/app_color.dart';
-import 'package:medsure_patient/res/app_images.dart';
 import 'package:medsure_patient/res/dimension.dart';
+import 'package:medsure_patient/screens/help/component/play_video.dart';
 
 class HelpVideoPageBody extends StatefulWidget{
   const HelpVideoPageBody({Key? key}) : super(key: key);
@@ -13,10 +16,12 @@ class HelpVideoPageBody extends StatefulWidget{
 
 }
 class _HelpVideoPageBodyState extends State<HelpVideoPageBody>{
+  List<VideoPlayerModel> videoListData = VideoPlayerModel.getVideoList();
   PageController pageController = PageController(viewportFraction: 0.85);
   var currentPage = 0.0;
   double scaleFactor =0.8;
   double _height =220;
+
 
   @override
   void initState() {
@@ -27,6 +32,8 @@ class _HelpVideoPageBodyState extends State<HelpVideoPageBody>{
         currentPage= pageController.page!;
       });
     });
+
+
   }
   @override
   void dispose() {
@@ -44,8 +51,8 @@ class _HelpVideoPageBodyState extends State<HelpVideoPageBody>{
           height: 220,
           child: PageView.builder(
               controller: pageController,
-              itemCount: 3,
-              itemBuilder: (context,position)=>buildPageViewUI(position)),
+              itemCount: videoListData.length,
+              itemBuilder: (context,position)=>buildPageViewUI(position,videoListData[position])),
         ),
         DotsIndicator(
           dotsCount: 3,
@@ -67,7 +74,7 @@ class _HelpVideoPageBodyState extends State<HelpVideoPageBody>{
     );
   }
 
-  Widget buildPageViewUI(int index){
+  Widget buildPageViewUI(int index, VideoPlayerModel videoListData){
     Matrix4 matrix = Matrix4.identity();
     if(index==currentPage.floor()){
       var currScale = 1-(currentPage-index)*(1-scaleFactor);
@@ -97,8 +104,8 @@ class _HelpVideoPageBodyState extends State<HelpVideoPageBody>{
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4.0),
                   color: AppColors.lightBlueColor,
-                  image: const DecorationImage(
-                      image: AssetImage(AppImages.demoRecImg),
+                  image:  DecorationImage(
+                      image: AssetImage(videoListData.thumbUrl),
                       fit: BoxFit.cover
                   )
               ),
@@ -111,7 +118,11 @@ class _HelpVideoPageBodyState extends State<HelpVideoPageBody>{
                     border: Border.all(color: AppColors.whiteColor,width: 1),
                   ),
                   child: Center(
-                    child: Icon(Icons.play_arrow,size: Dimension.height24,color: AppColors.whiteColor,),
+                    child: GestureDetector(
+                      onTap: (){
+                        //Get.to(()=>PlayVideoScreen(videoListData.mediaUrl));
+                      },
+                        child: Icon(Icons.play_arrow,size: Dimension.height24,color: AppColors.whiteColor,)),
                   ),
                 ),
               )

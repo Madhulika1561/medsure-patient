@@ -8,7 +8,6 @@ import 'package:medsure_patient/res/dimension.dart';
 import 'package:medsure_patient/res/string.dart';
 import 'package:medsure_patient/widgetHelper/big_text.dart';
 import 'package:medsure_patient/widgetHelper/medsure_text.dart';
-import 'package:medsure_patient/widgetHelper/small_text.dart';
 import 'package:medsure_patient/widgetHelper/underline_text.dart';
 
 

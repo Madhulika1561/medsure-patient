@@ -1,11 +1,9 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:medsure_patient/res/app_color.dart';
 import 'package:medsure_patient/res/dimension.dart';
 import 'package:medsure_patient/res/string.dart';
-import 'package:medsure_patient/screens/report/compilance_report.dart';
 import 'package:medsure_patient/widget/consumMissedBoxWidegt.dart';
 import 'package:medsure_patient/widget/dayBar_widget.dart';
 import 'package:medsure_patient/widgetHelper/small_text.dart';

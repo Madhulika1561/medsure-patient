@@ -8,16 +8,9 @@ import 'package:medsure_patient/res/string.dart';
 
 class EditProfileController extends GetxController{
 
-  final editFirstName = TextEditingController();
-  final editLastName = TextEditingController();
-  final editEmail = TextEditingController();
-  final editMobileNum = TextEditingController();
-  final editPassword = TextEditingController();
-  final editDateInput = TextEditingController();
-  final editAddress = TextEditingController();
-  final editCity = TextEditingController();
-  final editState = TextEditingController();
-  final editCountry = TextEditingController();
+  late TextEditingController editFirstName,editLastName,editMobileNum,editDateInput,editPinCode,
+  editAddress,editCity,editState,editCountry;
+
 
   RxBool isEditPassHide = true.obs;
 
@@ -49,6 +42,15 @@ class EditProfileController extends GetxController{
       return pleaseEnterMobileNum;
     }else if(value.toString().trim().length<6){
       return pleaseEnterValidMobileNum;
+    }else{
+      return null;
+    }
+  }
+  String? validateEditPinCode(String value){
+    if(value.toString().trim().isEmpty){
+      return "Please enter the pin code";
+    }else if(value.toString().trim().length<4){
+      return "Please enter the valid pin code";
     }else{
       return null;
     }
@@ -96,6 +98,37 @@ class EditProfileController extends GetxController{
     }else{
       return null;
     }
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    editFirstName  = TextEditingController();
+    editLastName   = TextEditingController();
+    editMobileNum  = TextEditingController();
+    editDateInput  = TextEditingController();
+    editAddress    = TextEditingController();
+    editCity       = TextEditingController();
+    editState      = TextEditingController();
+    editPinCode    = TextEditingController();
+    editCountry    = TextEditingController();
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
+    editFirstName.dispose();
+    editLastName.dispose();
+    editMobileNum.dispose();
+    editDateInput.dispose();
+    editAddress.dispose();
+    editCity.dispose();
+    editState.dispose();
+    editPinCode.dispose();
+    editCountry.dispose();
+
   }
 
 

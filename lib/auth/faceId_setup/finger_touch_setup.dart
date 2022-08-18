@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:medsure_patient/auth/faceId_setup/success_face_setup.dart';
 import 'package:medsure_patient/bottom_screen/customBottomTextBar.dart';
@@ -12,8 +13,24 @@ import 'package:medsure_patient/widgetHelper/app_button.dart';
 import 'package:medsure_patient/widgetHelper/inter_font_text.dart';
 import 'package:medsure_patient/widgetHelper/small_text.dart';
 
-class FingerTouchSetup extends StatelessWidget{
+class FingerTouchSetup extends StatefulWidget{
   const FingerTouchSetup({Key? key}) : super(key: key);
+
+  @override
+  State<FingerTouchSetup> createState() => _FingerTouchSetupState();
+}
+
+class _FingerTouchSetupState extends State<FingerTouchSetup> {
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +71,7 @@ class FingerTouchSetup extends StatelessWidget{
       ),
     );
   }
+
   Widget buildTextUI()=>Column(
     children: [
       Align(
@@ -67,6 +85,7 @@ class FingerTouchSetup extends StatelessWidget{
 
     ],
   );
+
   Widget buildImageUI()=>Align(
     alignment: Alignment.center,
     child: SizedBox(
@@ -77,7 +96,9 @@ class FingerTouchSetup extends StatelessWidget{
       ),
     ),
   );
-  Widget buttonWidget()=>AppButton(onTap: (){
+
+  Widget buttonWidget()=>AppButton(onTap: () {
+
     Get.to(()=> const FaceSetupSuccess());
   },
     btnText: allowText,

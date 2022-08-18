@@ -1,9 +1,16 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:medsure_patient/dataService/apiContent.dart';
+import 'package:medsure_patient/helper/common.dart';
 import 'package:medsure_patient/helper/dialog/dose_missed_dialog.dart';
 import 'package:medsure_patient/helper/dialog/dose_taken_dailog.dart';
+import 'package:medsure_patient/helper/dialog/server_error_dialog.dart';
+import 'package:medsure_patient/helper/sharedPrefernce/shared_preference.dart';
 import 'package:medsure_patient/res/app_color.dart';
 import 'package:medsure_patient/res/app_images.dart';
 import 'package:medsure_patient/res/dimension.dart';
@@ -16,15 +23,32 @@ import 'package:medsure_patient/widgetHelper/big_text.dart';
 import 'package:medsure_patient/widgetHelper/inter_font_text.dart';
 import 'package:medsure_patient/widgetHelper/itemRowWidget.dart';
 import 'package:medsure_patient/widgetHelper/small_text.dart';
+import 'package:http/http.dart' as http;
 
-class HomeScreen extends GetView<HomeController>{
+class HomeScreen extends StatefulWidget{
 
-   HomeScreen({Key? key}) : super(key: key);
+   const HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
    final HomeController homeController = Get.put(HomeController());
+   int id =0;
+   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    UserSharedPreference.getUserId().then((value) {setState(() {id = value!;print(id.toString());getHomeResponse(id);});});
+    UserSharedPreference.getUserFirstName().then((value) {setState(() {homeController.firstName=value.toString();});});
+    UserSharedPreference.getUserLastName().then((value) {setState(() {homeController.lastName=value.toString();});});
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       body: Padding(
@@ -37,7 +61,7 @@ class HomeScreen extends GetView<HomeController>{
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    BigText(text: helloNameText, textColor: AppColors.blackColor, textSize: Dimension.fontSize20, fontWeight: FontWeight.w700),
+                    BigText(text:"Hello ${homeController.firstName} ${homeController.lastName}", textColor: AppColors.blackColor, textSize: Dimension.fontSize20, fontWeight: FontWeight.w700),
                     Row(
                       children: [
                         InkWell(
@@ -145,7 +169,7 @@ class HomeScreen extends GetView<HomeController>{
     decoration: BoxDecoration(
       color: AppColors.whiteColor,
       borderRadius: BorderRadius.circular(4.0),
-      boxShadow:  [BoxShadow(color: AppColors.shadowColor.withOpacity(0.2),offset: Offset(0.0,4.0),blurRadius: 5.0)]
+      boxShadow:  [BoxShadow(color: AppColors.shadowColor.withOpacity(0.2),offset: const Offset(0.0,4.0),blurRadius: 5.0)]
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,4 +244,36 @@ class HomeScreen extends GetView<HomeController>{
 
   );
 
+  Future<void> getHomeResponse(int idData)async{
+    Common.showLoading(message: loadingText);
+    print(idData);
+
+
+    try{
+      var url = Uri.parse(ApiContent.baseUrl+ApiContent.commonApiTag+ApiContent.homeApi+idData.toString());
+      var mapHeaders = {
+        'Content-Type':'application/json',
+        'accept':'application/json'
+      };
+
+      var response = await http.get(url,headers:mapHeaders);
+
+      if(response.statusCode==ApiContent.statusCode200){
+        final result = json.decode(response.body);
+        Common.hideLoading();
+        print(result);
+        print("success");
+      }else{
+        Common.hideLoading();
+        //Get.dialog(const ServerErrorDialog(message: "Failed!",));
+      }
+
+
+    } on PlatformException catch(e){
+      Common.hideLoading();
+     // Get.dialog(ServerErrorDialog(message: e.toString(),));
+    }
+
+
+  }
 }

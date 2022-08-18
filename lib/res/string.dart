@@ -1,6 +1,7 @@
 
  const String unlockTouchFaceText ="Unlock with Face/Touch ID";
  const String orText ="Or";
+ const String loadingText ="Loading..";
  const String userHintNameText ="Mickalene Thomas ";
  const String loginWithUserName ="Login with Username";
  const String doNotHaveAccount ="Don’t have an account? Register here";
@@ -59,13 +60,13 @@
  const String enterStateText = "Enter state name";
  const String enterPostalCodeText = "Enter postal code";
  const String enterCountryText = "Enter country name";
- const String termAndConditionText = "This website is operated by LOCKEDBRANDS LLC. Throughout the site, the terms “we”, “us” and “our” refer to LOCKEDBRANDS LLC. LOCKEDBRANDS LLC offers this website, including all information, tools, and services available from this site to you, the user, conditioned upon your acceptance of all terms, conditions, policies and notices stated here.By visiting our site and/ or purchasing something from us, you engage in our “Service” and agree to be bound by the following terms and conditions (“Terms of Service”, “Terms”), including those additional terms and conditions and policies referenced herein and/or available by hyperlink. These Terms of Service apply to all users of the site, including without limitation users who are browsers, vendors, customers, merchants, and/ or contributors of content.Please read these Terms of Service carefully before accessing or using our website. By accessing or using any part of the site, you agree to be bound by these Terms of Service. If you do not agree to all the terms and conditions of this agreement, then you may not access the website or use any services. If these Terms of Service are considered an offer, acceptance is expressly limited to these Terms of Service.";
+ const String termAndConditionText = "This website is operated by LOCKEDBRANDS LLC. Throughout the site, the terms “we”, “us” and “our” refer to LOCKEDBRANDS LLC. LOCKEDBRANDS LLC offers this website, including all information, tools, and services available from this site to you, the user, conditioned upon your acceptance of all terms, conditions, policies and notices stated here.By visiting our site and/ or purchasing something from us, you engage in our “dataService” and agree to be bound by the following terms and conditions (“Terms of dataService”, “Terms”), including those additional terms and conditions and policies referenced herein and/or available by hyperlink. These Terms of dataService apply to all users of the site, including without limitation users who are browsers, vendors, customers, merchants, and/ or contributors of content.Please read these Terms of dataService carefully before accessing or using our website. By accessing or using any part of the site, you agree to be bound by these Terms of dataService. If you do not agree to all the terms and conditions of this agreement, then you may not access the website or use any services. If these Terms of dataService are considered an offer, acceptance is expressly limited to these Terms of dataService.";
  const String privacyPolicyContentText="This Privacy Policy describes how your personal information is collected, used, and shared when you visit or make a purchase from lockedbrands.com (the “Site”).\n\n\n"
      "PERSONAL INFORMATION WE COLLECT\n\n"
      "When you visit the Site, we automatically collect certain information about your device, including information about your web browser, IP address, time zone, and some of the cookies that are installed on your device. Additionally, as you browse the Site, we collect information about the individual web pages or products that you view, what websites or search terms referred you to the Site, and information about how you interact with the Site. We refer to this automatically-collected information as “Device Information”.\n\n"
      "We collect Device Information using the following technologies:\n\n"
-     "- “Cookies” are data files that are placed on your device or computer and often include an anonymous unique identifier. For more information about cookies, and how to disable cookies, visit http://www.allaboutcookies.org.\n"
-     "- “Log files” track actions occurring on the Site, and collect data including your IP address, browser type, Internet service provider, referring/exit pages, and date/time stamps.\n"
+     "- “Cookies” are dataService files that are placed on your device or computer and often include an anonymous unique identifier. For more information about cookies, and how to disable cookies, visit http://www.allaboutcookies.org.\n"
+     "- “Log files” track actions occurring on the Site, and collect dataService including your IP address, browser type, Internet service provider, referring/exit pages, and date/time stamps.\n"
      "- “Web beacons”, “tags”, and “pixels” are electronic files used to record information about how you browse the Site.";
 
  //validation
@@ -167,3 +168,21 @@
  const String personalInfoText = "Personal Information";
  const String deleteAccountText = "Delete Account";
  const String editProfileText = "Edit Profile";
+
+
+ //api constant tag
+
+ const String firstNameApiConsText = "first_name";
+ const String lastNameApiConsText = "last_name";
+ const String emailApiConsText = "email";
+ const String phoneNumberApiConsText = "phone_number";
+ const String genderApiConsText = "gender";
+ const String passwordApiConsText = "password";
+ const String dobApiConsText = "date_of_birth";
+ const String addressApiConsText = "address";
+ const String cityApiConsText = "city";
+ const String stateApiConsText = "state";
+ const String pinCodeApiConsText = "pin_code";
+ const String countryApiConsText = "country";
+ const String appIdApiConsText = "app_id";
+ const String patientTypeApiConsText = "patient_type";

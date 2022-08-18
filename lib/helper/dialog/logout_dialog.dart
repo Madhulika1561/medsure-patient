@@ -38,14 +38,14 @@ class LogoutDialog extends StatelessWidget{
               SizedBox(height: Dimension.height20,),
               SmallText(text: areYouSureLogoutText, textColor: AppColors.lightBlackColor, textSize: Dimension.fontSize16, fontWeight: FontWeight.w500,align: TextAlign.center,),
               SizedBox(height: Dimension.height20,),
-              buildButtonUI()
+              buildButtonUI(context)
             ],
           ),
         ),
       ),
     );
   }
-  Widget buildButtonUI()=>Row(
+  Widget buildButtonUI(BuildContext context)=>Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       SizedBox(
@@ -61,7 +61,8 @@ class LogoutDialog extends StatelessWidget{
       SizedBox(
         width: Dimension.screenWidth*0.42,
         child: AppButton(onTap: (){
-          Get.to(const LogInScreen());
+          Get.offAll(const LogInScreen());
+
          },
           btnText: logoutBtnText,
           height: Dimension.height48,

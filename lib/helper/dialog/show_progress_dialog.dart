@@ -1,10 +1,6 @@
 
-
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:medsure_patient/helper/common.dart';
 import 'package:medsure_patient/res/app_color.dart';
 import 'package:medsure_patient/res/dimension.dart';
 import 'package:medsure_patient/widgetHelper/small_text.dart';
@@ -12,7 +8,7 @@ import 'package:medsure_patient/widgetHelper/small_text.dart';
 class ShowProgressDialog extends StatelessWidget{
   final String loadingText;
   final bool? isLoading;
-    ShowProgressDialog({Key? key, required this.loadingText, this.isLoading}) : super(key: key);
+    const ShowProgressDialog({Key? key, required this.loadingText, this.isLoading}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

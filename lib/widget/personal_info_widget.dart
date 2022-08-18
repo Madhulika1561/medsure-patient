@@ -1,7 +1,6 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medsure_patient/helper/dialog/delete_dialog.dart';
@@ -10,12 +9,14 @@ import 'package:medsure_patient/res/dimension.dart';
 import 'package:medsure_patient/res/string.dart';
 import 'package:medsure_patient/screens/accountInfo/editProfile/edit_profile.dart';
 import 'package:medsure_patient/widgetHelper/big_text.dart';
-import 'package:medsure_patient/widgetHelper/itemRowWidget.dart';
 import 'package:medsure_patient/widgetHelper/personalInfo_row_text.dart';
-import 'package:medsure_patient/widgetHelper/small_text.dart';
+
 
 class PersonalInfoWidget extends StatelessWidget{
-  const PersonalInfoWidget({Key? key}) : super(key: key);
+  final String? firstName,lastName,gender,dob,address,city,state,country;
+  final int? phoneNumber,postal_code;
+   const PersonalInfoWidget( this.firstName,this.lastName,this.gender,this.dob, this.address,
+        this.city,  this.state,  this.country,  this.phoneNumber,  this.postal_code, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,25 +52,25 @@ class PersonalInfoWidget extends StatelessWidget{
   Widget informationUI()=>Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      PersonalInfoRowText(firstName: 'First name',lastName: 'Moiraine',textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
+      PersonalInfoRowText(firstName: 'First name',lastName: firstName.toString(),textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
       SizedBox(height: Dimension.height22,),
-      PersonalInfoRowText(firstName: 'Last name',lastName: 'Johnson',textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
+      PersonalInfoRowText(firstName: 'Last name',lastName: lastName.toString(),textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
       SizedBox(height: Dimension.height22,),
-      PersonalInfoRowText(firstName: 'Gender',lastName: 'Male',textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
+      PersonalInfoRowText(firstName: 'Gender',lastName: gender.toString(),textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
       SizedBox(height: Dimension.height22,),
-      PersonalInfoRowText(firstName: 'Date of birth',lastName: 'October 28, 1957',textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
+      PersonalInfoRowText(firstName: 'Date of birth',lastName: dob.toString(),textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
       SizedBox(height: Dimension.height22,),
-      PersonalInfoRowText(firstName: 'Phone number',lastName: '+1 345-678-9098',textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
+      PersonalInfoRowText(firstName: 'Phone number',lastName: phoneNumber.toString(),textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
       SizedBox(height: Dimension.height22,),
-      PersonalInfoRowText(firstName: 'Address',lastName: 'Mongolia Ave,300N',textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
+      PersonalInfoRowText(firstName: 'Address',lastName: address.toString(),textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
       SizedBox(height: Dimension.height22,),
-      PersonalInfoRowText(firstName: 'City',lastName: 'Pittsburgh',textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
+      PersonalInfoRowText(firstName: 'City',lastName: city.toString(),textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
       SizedBox(height: Dimension.height22,),
-      PersonalInfoRowText(firstName: 'State',lastName: 'Pennsylvania',textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
+      PersonalInfoRowText(firstName: 'State',lastName: state.toString(),textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
       SizedBox(height: Dimension.height22,),
-      PersonalInfoRowText(firstName: 'Postal code',lastName: '15106',textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
+      PersonalInfoRowText(firstName: 'Postal code',lastName: postal_code.toString(),textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
       SizedBox(height: Dimension.height22,),
-      PersonalInfoRowText(firstName: 'Country',lastName: 'United States',textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
+      PersonalInfoRowText(firstName: 'Country',lastName: country.toString(),textColor: AppColors.lightLBGreyOneColor,textSize: Dimension.fontSize16, fontWeight: FontWeight.w700,fontWeight1: FontWeight.w500),
 
 
     ],
@@ -82,7 +83,7 @@ class PersonalInfoWidget extends StatelessWidget{
         alignment: Alignment.center,
           child: InkWell(
             onTap: (){
-              Get.to(()=>EditProfileScreen());
+              Get.to(()=>const EditProfileScreen());
             },
               child: Text(editProfileText,style: GoogleFonts.openSans(color: AppColors.lightBlueColor,fontSize: Dimension.fontSize16,fontWeight: FontWeight.w400,fontStyle: FontStyle.normal,),))),
       SizedBox(height: Dimension.height16,),

@@ -19,6 +19,12 @@ class HelpScreen extends StatefulWidget{
 
 class _HelpScreenState extends State<HelpScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return  Scaffold(
@@ -36,7 +42,7 @@ class _HelpScreenState extends State<HelpScreen> {
             SizedBox(height: Dimension.height13),
             buildTextUI(),
             SizedBox(height: Dimension.height10),
-            HelpVideoPageBody(),
+            const HelpVideoPageBody(),
             SizedBox(height: Dimension.height20),
             buildEducationalTextUI(),
             SizedBox(height: Dimension.height20),

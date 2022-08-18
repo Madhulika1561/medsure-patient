@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medsure_patient/helper/dialog/logout_dialog.dart';
+import 'package:medsure_patient/helper/sharedPrefernce/shared_preference.dart';
 
 import 'package:medsure_patient/res/app_color.dart';
 import 'package:medsure_patient/res/dimension.dart';
@@ -23,6 +24,19 @@ class AccountInfoScreen extends StatefulWidget{
 }
 
 class _AccountInfoScreenState extends State<AccountInfoScreen>{
+  String firstName='',lastName='';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    UserSharedPreference.getUserFirstName().then((value) {setState(() {
+      firstName=value.toString();
+    });});
+    UserSharedPreference.getUserLastName().then((value) {setState(() {
+      lastName=value.toString();
+    });});
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -43,7 +57,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen>{
           children: [
             SizedBox(height: Dimension.height50,),
             Padding(padding: EdgeInsets.only(left: Dimension.width20,right: Dimension.width20),
-            child: const AccountInfoWidget(),)
+            child:  AccountInfoWidget(firstName,lastName),)
 
           ],
         ),

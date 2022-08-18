@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medsure_patient/helper/dialog/show_progress_dialog.dart';
@@ -42,7 +43,7 @@ class Common{
 
   InputDecoration getInputDecoration({required String hintText}){
     return InputDecoration(
-      contentPadding:  EdgeInsets.only(left: Dimension.width20),
+      contentPadding:  EdgeInsets.only(left: Dimension.width20,),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(Dimension.height10),
         borderSide: const BorderSide(
@@ -152,7 +153,34 @@ class Common{
     }
   }
 
+  static void showToastMessage(String message){
+    Fluttertoast.showToast(
+        msg: message.toString(),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black12,
+        textColor: Colors.black,
+        fontSize: Dimension.fontSize12,
+    );
+  }
 
+
+
+  var videoList =[
+    {
+      'media_url':'https://i.ytimg.com/an_webp/tUP5S4YdEJo/mqdefault_6s.webp?du=3000&sqp=CO7e8ZcG&rs=AOn4CLDWsLTfyXU7kG4ZvztknOrGllpiug',
+      'thumb_url':'https://www.netscribes.com/wp-content/uploads/2019/06/Technology-Watch.jpg'
+    },
+    {
+      'media_url':'https://i.ytimg.com/an_webp/tUP5S4YdEJo/mqdefault_6s.webp?du=3000&sqp=CO7e8ZcG&rs=AOn4CLDWsLTfyXU7kG4ZvztknOrGllpiug',
+      'thumb_url':'https://www.netscribes.com/wp-content/uploads/2019/06/Technology-Watch.jpg'
+    },
+    {
+      'media_url':'https://i.ytimg.com/an_webp/tUP5S4YdEJo/mqdefault_6s.webp?du=3000&sqp=CO7e8ZcG&rs=AOn4CLDWsLTfyXU7kG4ZvztknOrGllpiug',
+      'thumb_url':'https://www.netscribes.com/wp-content/uploads/2019/06/Technology-Watch.jpg'
+    },
+  ];
 
 
 }

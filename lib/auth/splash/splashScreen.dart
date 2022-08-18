@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:medsure_patient/auth/splash/splashController/splash_controller.dart';
 import 'package:medsure_patient/res/app_images.dart';
 import 'package:medsure_patient/res/dimension.dart';
-import 'package:medsure_patient/widgetHelper/medsure_text.dart';
+
 
 class SplashScreen extends StatelessWidget{
    SplashScreen({Key? key}) : super(key: key);

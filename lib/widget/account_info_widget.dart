@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:get/get.dart';
 import 'package:medsure_patient/helper/dialog/disable_faceTouchId_dialog.dart';
 import 'package:medsure_patient/res/app_color.dart';
@@ -14,7 +14,8 @@ import 'package:medsure_patient/widgetHelper/itemRowWidget.dart';
 import 'package:medsure_patient/widgetHelper/small_text.dart';
 
 class AccountInfoWidget extends StatelessWidget{
-  const AccountInfoWidget({Key? key}) : super(key: key);
+  final String? firstName,lastName;
+   const AccountInfoWidget(this.firstName,this.lastName, {Key? key}) : super(key: key);
 
 
   @override
@@ -27,7 +28,7 @@ class AccountInfoWidget extends StatelessWidget{
         SizedBox(height: Dimension.height20,),
         Align(
             alignment: Alignment.topCenter,
-            child: SmallText(text: "Moiraine Johnson", textColor: AppColors.lightBlackColor, textSize: Dimension.fontSize18, fontWeight: FontWeight.w400,align: TextAlign.center,)),
+            child: SmallText(text: "$firstName $lastName", textColor: AppColors.lightBlackColor, textSize: Dimension.fontSize18, fontWeight: FontWeight.w400,align: TextAlign.center,)),
         SizedBox(height: Dimension.height16,),
         buildPersonalInfoUI()
       ],

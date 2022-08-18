@@ -1,16 +1,22 @@
 
 import 'package:get/get.dart';
-import 'package:medsure_patient/auth/singup/singupController/singup_controller.dart';
-import 'package:medsure_patient/data/api/api_client.dart';
-import 'package:medsure_patient/data/apiContent.dart';
-import 'package:medsure_patient/data/singupRepo/signup_repo.dart';
+import 'package:medsure_patient/dataService/api/api_client_api.dart';
+import 'package:medsure_patient/dataService/apiContent.dart';
+import 'package:medsure_patient/dataService/repository/call_repo.dart';
+import 'package:medsure_patient/dataService/repository/signup_repo.dart';
+import 'package:medsure_patient/screens/call/callController/call_controller.dart';
+import 'package:medsure_patient/screens/home/home_controller/connectivity_controller.dart';
+
 
 Future<void> init() async{
-   //api client
+   ///api client
    Get.lazyPut(() => ApiClient(appBaseUrl: ApiContent.baseUrl));
-   //repo
+   ///repo
    Get.lazyPut(() => SignupRepo(apiClient: Get.find()));
-   //controller
-  //Get.lazyPut(() => SingUpController(signupRepo: Get.find()));
-   
+   Get.lazyPut(() => CallRepo(apiClient: Get.find()));
+
+   ///controller
+  Get.lazyPut(() => CallController(callRepo: Get.find()));
+
+
 }
